@@ -1,0 +1,770 @@
+<title>Kembara Syurga Cilik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap">
+
+<style>
+  :root {
+    --bg: #0f1b35;
+    --surface: #162447;
+    --card: #1e3460;
+    --border: #2a4a7f;
+    --gold: #f9c74f;
+    --gold-dark: #c99a1a;
+    --teal: #4cc9c0;
+    --teal-dark: #2a8f88;
+    --green: #57cc8b;
+    --red: #ff6b6b;
+    --white: #f0f4ff;
+    --muted: #8ba3cc;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #app {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+
+  #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star-dot {
+    position: absolute; border-radius: 50%; background: white;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite; opacity: 0;
+  }
+  @keyframes twinkle { 0%,100%{opacity:0} 50%{opacity:var(--max-op,.8)} }
+
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 16px; z-index: 2;
+  }
+  .screen[hidden] { display: none !important; }
+
+  /* ---- DAFTAR MASUK ---- */
+  .daftar-box {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    padding: clamp(24px,6vw,40px);
+    width: 100%; max-width: 420px;
+    display: flex; flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    position: relative; overflow: hidden;
+  }
+  .daftar-box::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+  }
+  .daftar-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(22px,6vw,30px);
+    color: var(--gold); text-align: center;
+  }
+  .daftar-sub {
+    font-size: clamp(12px,3vw,14px);
+    color: var(--muted); text-align: center; margin-top: -10px;
+  }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group label {
+    font-size: 13px; font-weight: 700;
+    color: var(--teal); letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .field-group input, .field-group select {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(15px,4vw,17px);
+    font-weight: 600;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .field-group input:focus, .field-group select:focus { border-color: var(--teal); }
+  .field-group select option { background: var(--surface); }
+  .err-msg {
+    font-size: 13px; color: var(--red); font-weight: 700;
+    text-align: center; min-height: 18px;
+  }
+
+  /* ---- INTRO ---- */
+  .logo-emoji {
+    font-size: clamp(60px,15vw,100px);
+    animation: float 3s ease-in-out infinite; display: block;
+    text-align: center;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .intro-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(28px,8vw,56px);
+    color: var(--gold);
+    text-shadow: 0 0 24px rgba(249,199,79,.5);
+    line-height: 1.1; text-align: center;
+  }
+  .intro-sub {
+    font-size: clamp(13px,3.5vw,17px);
+    color: var(--teal); text-align: center; margin-top: 8px; font-weight: 600;
+  }
+
+  /* ---- BUTTONS ---- */
+  .btn {
+    width: 100%; border: none; border-radius: 50px;
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(16px,4.5vw,22px);
+    padding: 13px 24px; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative; z-index: 2;
+  }
+  .btn:hover { transform: scale(1.04); }
+  .btn:active { transform: scale(0.97); }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #1a1200;
+    box-shadow: 0 4px 20px rgba(249,199,79,.4);
+  }
+  .btn-teal {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    color: #0d2a28;
+    box-shadow: 0 4px 20px rgba(76,201,192,.35);
+  }
+  .btn-ghost {
+    background: transparent; border: 2px solid var(--border);
+    color: var(--muted); font-size: clamp(13px,3.5vw,15px);
+    padding: 9px 20px; box-shadow: none;
+  }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--white); }
+
+  /* ---- NOTA ---- */
+  #screen-nota {
+    overflow-y: auto; justify-content: flex-start;
+    padding-top: 20px; padding-bottom: 32px;
+  }
+  .nota-wrap { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 14px; }
+  .nota-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(20px,6vw,30px);
+    color: var(--gold); text-align: center;
+  }
+  .nota-card {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 18px; padding: 16px 18px;
+  }
+  .nota-card h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(14px,4vw,19px); color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .nota-card p, .nota-card li { font-size: clamp(13px,3.2vw,15px); line-height: 1.65; }
+  .nota-card ul, .nota-card ol { padding-left: 20px; }
+  .nota-card li { margin-bottom: 4px; }
+  .arabic {
+    font-size: clamp(18px,5vw,26px); direction: rtl;
+    color: var(--gold); font-weight: 700;
+    display: block; text-align: right; margin-bottom: 4px;
+  }
+  .tag {
+    display: inline-block; border-radius: 20px;
+    font-size: 12px; font-weight: 700; padding: 2px 10px; margin-top: 4px;
+  }
+  .tag-gold { background: rgba(249,199,79,.15); border: 1px solid var(--gold); color: var(--gold); }
+  .tag-teal { background: rgba(76,201,192,.15); border: 1px solid var(--teal); color: var(--teal); }
+
+  /* ---- SOALAN ---- */
+  .game-card {
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 24px; padding: clamp(20px,5vw,30px);
+    width: 100%; max-width: 520px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.4);
+    position: relative; overflow: hidden;
+  }
+  .game-card::before {
+    content:''; position:absolute; top:0;left:0;right:0; height:4px;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+  }
+  .q-badge {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(12px,3vw,14px); color: var(--muted); letter-spacing: 0.5px;
+    align-self: flex-start;
+  }
+  .q-text {
+    font-size: clamp(15px,4vw,19px); font-weight: 700;
+    text-align: center; line-height: 1.5;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+  .opt-btn {
+    width: 100%; background: var(--surface); border: 2px solid var(--border);
+    border-radius: 14px; color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(14px,3.8vw,16px); font-weight: 700;
+    padding: 12px 16px; text-align: left; cursor: pointer;
+    transition: border-color .2s, background .2s, transform .12s;
+    display: flex; align-items: center; gap: 12px;
+    position: relative; z-index: 2;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--teal);
+    background: rgba(76,201,192,.08);
+    transform: translateX(4px);
+  }
+  .opt-letter {
+    min-width: 28px; height: 28px; background: var(--card);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--teal);
+    flex-shrink: 0;
+  }
+  .opt-btn.correct { border-color: var(--green); background: rgba(87,204,139,.12); }
+  .opt-btn.correct .opt-letter { background: var(--green); color: #0d2a20; }
+  .opt-btn.wrong { border-color: var(--red); background: rgba(255,107,107,.1); opacity:.7; }
+  .opt-btn.wrong .opt-letter { background: var(--red); color:#fff; }
+
+  /* ---- FEEDBACK ---- */
+  .feedback-wrap { display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; }
+  .fb-icon { font-size: clamp(44px,14vw,68px); line-height:1; }
+  .fb-msg { font-family:'Fredoka One',cursive; font-size:clamp(18px,5vw,24px); text-align:center; }
+  .fb-pts { font-family:'Fredoka One',cursive; font-size:clamp(26px,7vw,40px); color:var(--gold); }
+  .fb-note {
+    background: rgba(87,204,139,.12); border: 1.5px solid var(--green);
+    border-radius: 14px; padding: 11px 18px;
+    font-size: clamp(13px,3.2vw,15px); text-align:center; line-height:1.6; width:100%;
+  }
+
+  /* ---- RESULT ---- */
+  .result-card {
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 24px; padding: clamp(22px,6vw,38px);
+    width: 100%; max-width: 520px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.4);
+    position: relative; overflow: hidden;
+  }
+  .result-card::before {
+    content:''; position:absolute; top:0;left:0;right:0; height:4px;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+  }
+  .result-name { font-family:'Fredoka One',cursive; font-size:clamp(14px,4vw,18px); color:var(--teal); }
+  .result-emoji { font-size:clamp(56px,18vw,90px); line-height:1; animation: pop .4s both; }
+  @keyframes pop { 0%{transform:scale(0)} 80%{transform:scale(1.15)} 100%{transform:scale(1)} }
+  .result-rank { font-family:'Fredoka One',cursive; font-size:clamp(20px,5.5vw,28px); color:var(--gold); }
+  .score-big { font-family:'Fredoka One',cursive; font-size:clamp(48px,14vw,70px); line-height:1; }
+  .score-lbl { font-size:13px; color:var(--muted); font-weight:600; }
+  .result-btns { display:flex; flex-direction:column; gap:10px; width:100%; margin-top:4px; }
+
+  /* ---- PASSWORD ---- */
+  .pw-box {
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 24px; padding: clamp(24px,6vw,40px);
+    width: 100%; max-width: 380px;
+    display: flex; flex-direction: column; gap: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5);
+    position: relative; overflow: hidden;
+  }
+  .pw-box::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+  }
+  .pw-title { font-family:'Fredoka One',cursive; font-size:clamp(20px,6vw,26px); color:var(--gold); text-align:center; }
+  .pw-sub { font-size:13px; color:var(--muted); text-align:center; margin-top:-8px; }
+  .pw-input {
+    background: var(--surface); border: 2px solid var(--border);
+    border-radius: 12px; color: var(--white);
+    font-family:'Nunito',sans-serif; font-size:clamp(16px,4vw,20px);
+    font-weight:700; padding:12px 16px; outline:none;
+    transition:border-color .2s; width:100%; letter-spacing:3px; text-align:center;
+  }
+  .pw-input:focus { border-color: var(--teal); }
+  .pw-err { font-size:13px; color:var(--red); font-weight:700; text-align:center; min-height:18px; }
+
+  /* ---- REKOD ---- */
+  #screen-rekod { overflow-y:auto; justify-content:flex-start; padding-top:16px; padding-bottom:32px; }
+  .rekod-wrap { width:100%; max-width:560px; display:flex; flex-direction:column; gap:12px; }
+  .rekod-title { font-family:'Fredoka One',cursive; font-size:clamp(20px,6vw,28px); color:var(--gold); text-align:center; }
+  .rekod-table { width:100%; border-collapse:collapse; }
+  .rekod-table th {
+    background: var(--surface); color: var(--teal);
+    font-family:'Fredoka One',cursive; font-size:clamp(12px,3vw,14px);
+    padding: 10px 12px; text-align:left; border-bottom: 2px solid var(--border);
+  }
+  .rekod-table td {
+    padding: 10px 12px; font-size:clamp(13px,3.2vw,14px);
+    border-bottom: 1px solid var(--border); vertical-align:middle;
+  }
+  .rekod-table tr:last-child td { border-bottom: none; }
+  .rekod-table tr:nth-child(even) td { background: rgba(255,255,255,.03); }
+  .rank-chip {
+    display:inline-block; border-radius:20px; font-size:11px; font-weight:700; padding:2px 9px;
+  }
+  .chip-gold { background:rgba(249,199,79,.2); color:var(--gold); border:1px solid var(--gold); }
+  .chip-teal { background:rgba(76,201,192,.2); color:var(--teal); border:1px solid var(--teal); }
+  .chip-muted { background:rgba(139,163,204,.15); color:var(--muted); border:1px solid var(--border); }
+  .empty-state { text-align:center; color:var(--muted); padding:32px 0; font-size:14px; }
+
+  /* ---- SCORE BAR ---- */
+  #score-bar {
+    position:fixed; top:0; left:0; right:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 10px 20px;
+    padding-top: calc(10px + env(safe-area-inset-top,0px));
+    background: rgba(15,27,53,.9); backdrop-filter:blur(8px);
+    border-bottom: 1px solid var(--border); z-index:10;
+  }
+  #score-bar[hidden] { display:none !important; }
+  .sb-score { font-family:'Fredoka One',cursive; font-size:clamp(15px,4vw,19px); color:var(--gold); }
+  .sb-dots { display:flex; gap:5px; }
+  .sb-dot {
+    width:clamp(8px,2.5vw,11px); height:clamp(8px,2.5vw,11px);
+    border-radius:50%; background:var(--border); transition:background .3s;
+  }
+  .sb-dot.done { background:var(--teal); }
+  .sb-dot.cur { background:var(--gold); box-shadow:0 0 8px var(--gold); }
+
+  /* ---- TOAST ---- */
+  #toast {
+    position:fixed; bottom:28px; left:50%;
+    transform:translateX(-50%) translateY(80px);
+    background:var(--card); border:2px solid var(--green); color:var(--green);
+    font-family:'Fredoka One',cursive; font-size:clamp(15px,4vw,19px);
+    padding:11px 26px; border-radius:50px; z-index:50;
+    transition:transform .3s, opacity .3s; opacity:0;
+    white-space:nowrap; pointer-events:none;
+  }
+  #toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  #toast.wrong { border-color:var(--red); color:var(--red); }
+
+  /* ---- CONFETTI ---- */
+  .cf {
+    position:fixed; top:-20px; border-radius:2px;
+    animation:fall linear forwards; z-index:100; pointer-events:none;
+  }
+  @keyframes fall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+
+  @media (prefers-reduced-motion:reduce) { *{animation:none!important;transition:none!important} }
+</style>
+
+<div id="stars"></div>
+<div id="score-bar" hidden>
+  <div class="sb-score">⭐ <span id="score-display">0</span> Mata</div>
+  <div class="sb-dots" id="sb-dots"></div>
+</div>
+<div id="toast"></div>
+
+<div id="app">
+
+  <!-- ===== INTRO ===== -->
+  <div id="screen-intro" class="screen">
+    <div style="text-align:center;margin-bottom:20px">
+      <span class="logo-emoji">🕌</span>
+      <h1 class="intro-title">Kembara<br>Syurga Cilik</h1>
+      <p class="intro-sub">Pendidikan Islam Tahun 1 • Adab, Zikir & Asmaul Husna</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px">
+      <button class="btn btn-gold" onclick="showDaftar()">✏️ Daftar & Mula</button>
+      <button class="btn btn-ghost" onclick="askPw('intro')">📋 Rekod Murid</button>
+    </div>
+  </div>
+
+  <!-- ===== DAFTAR MASUK ===== -->
+  <div id="screen-daftar" class="screen" hidden>
+    <div class="daftar-box">
+      <div>
+        <p class="daftar-title">✏️ Daftar Masuk</p>
+        <p class="daftar-sub">Isi nama dan kelas sebelum mula</p>
+      </div>
+      <div class="field-group">
+        <label>Nama Murid</label>
+        <input id="inp-nama" type="text" placeholder="cth: Ahmad Faris" maxlength="40"
+          oninput="clearErr()" onkeydown="if(event.key==='Enter')document.getElementById('inp-kelas').focus()">
+      </div>
+      <div class="field-group">
+        <label>Kelas</label>
+        <select id="inp-kelas">
+          <option value="">-- Pilih Kelas --</option>
+          <option>1 UKM</option>
+          <option>1 UUM</option>
+          <option>1 UPM</option>
+          <option>1 USM</option>
+          <option>1 UITM</option>
+          <option>1 UIA</option>
+        </select>
+      </div>
+      <p class="err-msg" id="err-msg"></p>
+      <button class="btn btn-gold" onclick="submitDaftar()">📖 Teruskan ke Nota</button>
+      <button class="btn btn-ghost" onclick="showScreen('intro')">← Kembali</button>
+    </div>
+  </div>
+
+  <!-- ===== NOTA ===== -->
+  <div id="screen-nota" class="screen" hidden>
+    <div class="nota-wrap">
+      <h2 class="nota-title">📚 Nota Pelajaran</h2>
+
+      <div class="nota-card">
+        <h3>☀️ Asmaul Husna: Ar-Rahman & Ar-Rahim</h3>
+        <div style="margin-bottom:12px">
+          <span class="arabic">الرَّحْمَٰنُ</span>
+          <span class="tag tag-gold">Ar-Rahman — Maha Pemurah</span>
+          <p style="margin-top:8px">Allah memberi rezeki, udara, hujan dan makanan kepada <strong>semua makhluk</strong> — orang beriman mahupun tidak, manusia mahupun haiwan.</p>
+        </div>
+        <div>
+          <span class="arabic">الرَّحِيمُ</span>
+          <span class="tag tag-teal">Ar-Rahim — Maha Penyayang</span>
+          <p style="margin-top:8px">Allah memberi kasih sayang dan ganjaran syurga <strong>khas untuk orang beriman</strong> sahaja di akhirat kelak. Contoh: pahala solat dan puasa.</p>
+        </div>
+      </div>
+
+      <div class="nota-card">
+        <h3>🤲 Zikir — Mengingati Allah</h3>
+        <p style="margin-bottom:10px">Zikir ialah mengingati Allah SWT dengan sebutan lidah dan ingatan hati.</p>
+        <ul>
+          <li><strong style="color:var(--gold)">سُبْحَانَ اللَّهِ</strong> — <em>Subhanallah</em> — Maha Suci Allah<br><small style="color:var(--muted)">Disebut bila melihat keindahan ciptaan Allah.</small></li>
+          <li style="margin-top:8px"><strong style="color:var(--gold)">الْحَمْدُ لِلَّهِ</strong> — <em>Alhamdulillah</em> — Segala Puji Bagi Allah<br><small style="color:var(--muted)">Disebut bila mendapat nikmat atau selesai makan.</small></li>
+          <li style="margin-top:8px"><strong style="color:var(--gold)">اللَّهُ أَكْبَرُ</strong> — <em>Allahu Akbar</em> — Allah Maha Besar<br><small style="color:var(--muted)">Disebut bila melihat keagungan Allah.</small></li>
+        </ul>
+      </div>
+
+      <div class="nota-card">
+        <h3>🌸 Adab Berzikir</h3>
+        <ol>
+          <li>Niat ikhlas kerana Allah ❤️</li>
+          <li>Duduk dengan sopan dan tenang 🧘</li>
+          <li>Sebut dengan suara yang lembut (tidak memekik!) 🤫</li>
+          <li>Faham maksud zikir yang disebut 💡</li>
+        </ol>
+      </div>
+
+      <button class="btn btn-gold" style="width:100%" onclick="startGame()">🎮 Mula Kuiz!</button>
+    </div>
+  </div>
+
+  <!-- ===== SOALAN ===== -->
+  <div id="screen-question" class="screen" hidden>
+    <div class="game-card" style="max-width:520px">
+      <p class="q-badge" id="q-badge">SOALAN 1 / 5</p>
+      <p class="q-text" id="q-text"></p>
+      <div class="options" id="options-wrap"></div>
+    </div>
+  </div>
+
+  <!-- ===== FEEDBACK ===== -->
+  <div id="screen-feedback" class="screen" hidden>
+    <div class="game-card" style="max-width:480px">
+      <div class="feedback-wrap" id="feedback-wrap"></div>
+      <button class="btn btn-gold" id="next-btn" onclick="nextQ()" style="width:100%">Seterusnya ➡️</button>
+    </div>
+  </div>
+
+  <!-- ===== RESULT ===== -->
+  <div id="screen-result" class="screen" hidden>
+    <div class="result-card">
+      <p class="result-name" id="result-name"></p>
+      <div class="result-emoji" id="result-emoji">🏆</div>
+      <div class="result-rank" id="result-rank"></div>
+      <div class="score-big" id="result-score"></div>
+      <div class="score-lbl">/ 50 Mata</div>
+      <div class="result-btns">
+        <button class="btn btn-teal" onclick="playAgain()">🔄 Cuba Semula</button>
+        <button class="btn btn-ghost" onclick="askPw('result')">📋 Lihat Rekod</button>
+        <button class="btn btn-ghost" onclick="showScreen('intro')">🏠 Menu Utama</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PASSWORD ===== -->
+  <div id="screen-password" class="screen" hidden>
+    <div class="pw-box">
+      <p class="pw-title">🔐 Kawasan Guru</p>
+      <p class="pw-sub">Masukkan kata laluan untuk lihat rekod murid</p>
+      <input id="pw-input" class="pw-input" type="password" placeholder="••••••••" maxlength="20"
+        oninput="document.getElementById('pw-err').textContent=''"
+        onkeydown="if(event.key==='Enter')checkPw()">
+      <p class="pw-err" id="pw-err"></p>
+      <button class="btn btn-gold" onclick="checkPw()">🔓 Masuk</button>
+      <button class="btn btn-ghost" onclick="showScreen(_pwBack)">← Kembali</button>
+    </div>
+  </div>
+
+  <!-- ===== REKOD ===== -->
+  <div id="screen-rekod" class="screen" hidden>
+    <div class="rekod-wrap">
+      <h2 class="rekod-title">📋 Rekod Murid</h2>
+      <div id="rekod-content"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" style="flex:1" onclick="showScreen('intro')">← Kembali</button>
+        <button class="btn btn-ghost" style="flex:1;color:var(--red);border-color:var(--red)" onclick="padamRekod()">🗑 Padam Semua</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== SOALAN ===== */
+const QS = [
+  {
+    text: 'Apakah maksud nama Allah Ar-Rahman?',
+    opts: ['Maha Pencipta', 'Maha Pemurah', 'Maha Mendengar'],
+    ans: 1,
+    explain: 'Ar-Rahman bermaksud Maha Pemurah — Allah memberi rezeki kepada SEMUA makhluk!'
+  },
+  {
+    text: 'Allah memberi makanan dan udara kepada semua manusia dan haiwan. Ini membuktikan Allah bersifat...',
+    opts: ['Ar-Rahim', 'Ar-Rahman', 'Al-Malik'],
+    ans: 1,
+    explain: 'Ar-Rahman — Allah memberi nikmat kepada semua makhluk-Nya tanpa mengira iman.'
+  },
+  {
+    text: 'Kasih sayang Allah yang khas dan ganjaran syurga untuk orang beriman sahaja merujuk kepada sifat...',
+    opts: ['Ar-Rahman', 'Al-Khaliq', 'Ar-Rahim'],
+    ans: 2,
+    explain: 'Ar-Rahim — kasih sayang & syurga khas untuk orang beriman di akhirat!'
+  },
+  {
+    text: 'Apakah ucapan zikir yang bermaksud "Segala Puji Bagi Allah"?',
+    opts: ['Subhanallah', 'Allahu Akbar', 'Alhamdulillah'],
+    ans: 2,
+    explain: 'Alhamdulillah — الْحَمْدُ لِلَّهِ — Segala Puji Bagi Allah! Ucap bila dapat nikmat.'
+  },
+  {
+    text: 'Antara berikut, yang manakah ADAB BERZIKIR yang betul?',
+    opts: ['Berzikir sambil menjerit-jerit', 'Berzikir dengan suara lembut dan tenang', 'Berzikir sambil berlari-lari'],
+    ans: 1,
+    explain: 'Berzikir hendaklah dengan suara lembut, tenang dan penuh keikhlasan.'
+  }
+];
+
+/* ===== STATE ===== */
+let curQ = 0, score = 0, murid = { nama: '', kelas: '' };
+
+/* ===== SCREENS ===== */
+const SCREENS = ['intro','daftar','nota','question','feedback','result','password','rekod'];
+let _pwBack = 'intro'; // screen to go back to from password
+
+function showScreen(name) {
+  SCREENS.forEach(s => {
+    const el = document.getElementById('screen-' + s);
+    if (!el) return;
+    el.hidden = (s !== name);
+  });
+  const bar = document.getElementById('score-bar');
+  bar.hidden = !['question','feedback'].includes(name);
+}
+
+/* ===== STARS ===== */
+(function() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 55; i++) {
+    const s = document.createElement('div');
+    s.className = 'star-dot';
+    const sz = Math.random() * 3 + 1;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${(Math.random()*3+2).toFixed(1)}s;--max-op:${(Math.random()*.6+.2).toFixed(2)};animation-delay:${(Math.random()*4).toFixed(1)}s`;
+    c.appendChild(s);
+  }
+})();
+
+/* ===== DAFTAR ===== */
+function showDaftar() { showScreen('daftar'); }
+function clearErr() { document.getElementById('err-msg').textContent = ''; }
+
+function submitDaftar() {
+  const nama = document.getElementById('inp-nama').value.trim();
+  const kelas = document.getElementById('inp-kelas').value;
+  if (!nama) { document.getElementById('err-msg').textContent = '⚠️ Sila isi nama murid.'; return; }
+  if (!kelas) { document.getElementById('err-msg').textContent = '⚠️ Sila pilih kelas.'; return; }
+  murid = { nama, kelas };
+  showScreen('nota');
+}
+
+/* ===== GAME ===== */
+function startGame() {
+  curQ = 0; score = 0;
+  updateBar();
+  showQ();
+}
+
+function updateBar() {
+  document.getElementById('score-display').textContent = score;
+  const wrap = document.getElementById('sb-dots');
+  wrap.innerHTML = '';
+  QS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'sb-dot' + (i < curQ ? ' done' : (i === curQ ? ' cur' : ''));
+    wrap.appendChild(d);
+  });
+}
+
+function showQ() {
+  const q = QS[curQ];
+  document.getElementById('q-badge').textContent = 'Soalan ' + (curQ+1) + ' / ' + QS.length;
+  document.getElementById('q-text').textContent = q.text;
+  const wrap = document.getElementById('options-wrap');
+  wrap.innerHTML = '';
+  ['A','B','C'].forEach((ltr, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.innerHTML = '<span class="opt-letter">' + ltr + '</span> ' + q.opts[i];
+    b.onclick = () => jawab(i, b, q);
+    wrap.appendChild(b);
+  });
+  showScreen('question');
+}
+
+function jawab(idx, btn, q) {
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  const betul = idx === q.ans;
+  if (betul) {
+    btn.classList.add('correct');
+    score += 10;
+    updateBar();
+    showToast('Betul! +10 Mata 🎉', false);
+    setTimeout(() => showFb(true, q.explain), 600);
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn')[q.ans].classList.add('correct');
+    showToast('Hmm, cuba lagi! 💪', true);
+    setTimeout(() => showFb(false, q.explain), 600);
+  }
+}
+
+function showFb(betul, explain) {
+  const wrap = document.getElementById('feedback-wrap');
+  if (betul) {
+    wrap.innerHTML = '<div class="fb-icon">🎉</div><div class="fb-msg" style="color:var(--green)">Hebat! Jawapan Betul!</div><div class="fb-pts">+10 Mata</div><div class="fb-note">💡 ' + explain + '</div>';
+    confetti();
+  } else {
+    wrap.innerHTML = '<div class="fb-icon">😊</div><div class="fb-msg" style="color:var(--teal)">Cuba lagi kali depan!</div><div class="fb-note">💡 ' + explain + '</div>';
+  }
+  const isLast = curQ >= QS.length - 1;
+  document.getElementById('next-btn').textContent = isLast ? '🏆 Lihat Keputusan!' : 'Seterusnya ➡️';
+  showScreen('feedback');
+}
+
+function nextQ() {
+  curQ++;
+  if (curQ >= QS.length) showResult();
+  else { updateBar(); showQ(); }
+}
+
+/* ===== RESULT ===== */
+function showResult() {
+  // Simpan rekod
+  saveRekod();
+
+  document.getElementById('result-name').textContent = murid.nama + ' — ' + murid.kelas;
+  document.getElementById('result-score').textContent = score;
+
+  let emoji, rank;
+  if (score >= 40) { emoji = '🌟'; rank = 'Wira Zikir & Asmaul Husna!\nCemerlang! 🎖️'; }
+  else if (score >= 20) { emoji = '⭐'; rank = 'Bintang Cilik Islamik!\nBagus! 👏'; }
+  else { emoji = '🎈'; rank = 'Pejuang Cilik!\nCuba Lagi, Anda Boleh! 💪'; }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-rank').textContent = rank;
+  if (score >= 40) confetti(80);
+  document.getElementById('score-bar').hidden = true;
+  showScreen('result');
+}
+
+function playAgain() {
+  // Reset untuk murid yang sama
+  curQ = 0; score = 0;
+  updateBar();
+  showQ();
+}
+
+/* ===== REKOD ===== */
+function getRekod() {
+  try { return JSON.parse(localStorage.getItem('rekod_murid') || '[]'); } catch(e) { return []; }
+}
+
+function saveRekod() {
+  const list = getRekod();
+  const now = new Date();
+  const masa = now.toLocaleString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  let rank;
+  if (score >= 40) rank = 'Wira';
+  else if (score >= 20) rank = 'Bintang';
+  else rank = 'Pejuang';
+  list.unshift({ nama: murid.nama, kelas: murid.kelas, mata: score, rank, masa });
+  // Simpan max 100 rekod
+  try { localStorage.setItem('rekod_murid', JSON.stringify(list.slice(0, 100))); } catch(e) {}
+}
+
+function askPw(backScreen) {
+  _pwBack = backScreen || 'intro';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-err').textContent = '';
+  showScreen('password');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value;
+  if (val === '1234@abc') {
+    showRekod();
+  } else {
+    document.getElementById('pw-err').textContent = '❌ Kata laluan salah. Cuba lagi.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function showRekod() {
+  const list = getRekod();
+  const wrap = document.getElementById('rekod-content');
+  if (!list.length) {
+    wrap.innerHTML = '<div class="empty-state">🕌<br><br>Belum ada rekod lagi.<br>Murid perlu main dulu!</div>';
+  } else {
+    let html = '<div style="overflow-x:auto"><table class="rekod-table"><thead><tr><th>#</th><th>Nama</th><th>Kelas</th><th>Mata</th><th>Pencapaian</th><th>Masa</th></tr></thead><tbody>';
+    list.forEach((r, i) => {
+      const chipClass = r.rank === 'Wira' ? 'chip-gold' : r.rank === 'Bintang' ? 'chip-teal' : 'chip-muted';
+      html += '<tr><td style="color:var(--muted)">' + (i+1) + '</td><td style="font-weight:700">' + r.nama + '</td><td>' + r.kelas + '</td><td style="font-family:Fredoka One,cursive;color:var(--gold)">' + r.mata + '</td><td><span class="rank-chip ' + chipClass + '">' + r.rank + '</span></td><td style="color:var(--muted);font-size:12px">' + r.masa + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    wrap.innerHTML = html;
+  }
+  showScreen('rekod');
+}
+
+function padamRekod() {
+  if (!confirm('Padam SEMUA rekod murid? Tindakan ini tidak boleh diundur.')) return;
+  try { localStorage.removeItem('rekod_murid'); } catch(e) {}
+  showRekod();
+}
+
+/* ===== TOAST ===== */
+function showToast(msg, wrong) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (wrong ? ' wrong' : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.className = ''; }, 2000);
+}
+
+/* ===== CONFETTI ===== */
+function confetti(n = 40) {
+  const cols = ['#f9c74f','#4cc9c0','#57cc8b','#ff6b6b','#a29bfe','#fd79a8'];
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'cf';
+    const sz = 6 + Math.random() * 8;
+    p.style.cssText = `left:${10+Math.random()*80}%;background:${cols[Math.floor(Math.random()*cols.length)]};width:${sz}px;height:${sz}px;animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.8}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(p);
+    p.addEventListener('animationend', () => p.remove());
+  }
+}
+</script>
